@@ -1,42 +1,42 @@
-# State — 2026-06-04
-Settimana corrente: 2 | Blocco: 1
+State — 2026-06-07
+Settimana corrente: 3 | Blocco: 1
+Fatto
 
-## Fatto
-- Preprocessing: imputation mediana globale, train/test split 80/20 con random_state=42, StandardScaler fit su x_train
-- Trained 4 modelli: Logistic Regression, Decision Tree, Random Forest, Gradient Boosting
-- Metriche calcolate: accuracy + ROC-AUC per tutti i modelli
-- Push notebook `wk2_ml_baseline.ipynb` su GitHub
+Cross-validation stratificata (StratifiedKFold, 5 fold) → AUC media 0.953, std 0.011 — modello stabile
+Metriche avanzate: precision 0.797, recall 0.855, F1 0.825, PR-AUC 0.901
+Grafico Precision-Recall Curve
+Gestione classi sbilanciate: SMOTE (risultati quasi identici al baseline — dataset non troppo sbilanciato) + threshold tuning a 0.3 (recall +0.02, precision -0.03)
+Calibrazione probabilità: CalibratedClassifierCV con isotonic regression + reliability diagram
+SHAP: waterfall plot (analisi locale) + beeswarm plot (analisi globale)
+Push notebook wk3_evaluation.ipynb su GitHub
 
-## Risultati
-| Modello | Accuracy | ROC-AUC |
-|---|---|---|
-| Logistic Regression | 0.77 | 0.84 |
-| Decision Tree | 0.82 | 0.82 |
-| Random Forest | 0.88 | 0.93 |
-| Gradient Boosting | 0.87 | 0.94 |
+Risultati
+MetricaValoreCV AUC (media)0.953CV AUC (std)0.011Precision0.797Recall0.855F10.825PR-AUC0.901
+Concetti chiari
 
-## Modello scelto
-Gradient Boosting — ROC-AUC più alta (0.94), metrica più affidabile su classi sbilanciate. Interpretabile con SHAP in Wk3.
+Cross-validation stratificata: perché serve, come funziona, differenza con singolo train/test split
+Precision vs recall: definizioni, trade-off, quando privilegiare l'una o l'altra in ambito clinico
+PR-AUC: più informativa di ROC-AUC su classi sbilanciate
+SMOTE: crea esempi sintetici della classe minoritaria, solo su training set
+Threshold tuning: sposta la soglia di decisione senza ritrainare
+Calibrazione: allinea le probabilità predette alla realtà — importante quando le probabilità vengono usate direttamente
+SHAP waterfall: analisi locale, spiega una singola predizione
+SHAP beeswarm: analisi globale, importanza delle feature su tutto il dataset
+f(x) in SHAP è in log-odds, non in probabilità — va convertito con sigmoide
 
-## Concetti chiari
-- Differenza accuracy vs ROC-AUC e quando usare l'una o l'altra
-- Logica predict vs predict_proba
-- Perché fit dello scaler solo su x_train (data leakage)
-- Intuizione dei 4 algoritmi e progressione LR → DT → RF → GB
-- random_state per riproducibilità
+Concetti ancora confusi
 
-## Concetti ancora confusi
-- Sintassi pandas: ancora qualche incertezza
+Nessuno per ora
 
-## Domande aperte
-- Confrontare imputation mediana globale vs per gruppo in Wk3 — impatto sulle metriche?
+Domande aperte
 
-## Prossimi step (Wk3)
-- Cross-validation stratificata
-- Metriche avanzate: precision/recall/F1, PR-AUC
-- Gestione classi sbilanciate (SMOTE, class_weight, threshold tuning)
-- Calibrazione probabilità
-- SHAP per feature importance
+Nessuna per ora
 
-## Repo / file
+Prossimi step (Wk4)
+
+PyTorch dalle basi: tensori, autograd, training loop manuale
+MLP sui dati tabulari del Blocco 1 (confronto con XGBoost)
+Concetti: backprop, loss function, optimizer, batch/epoch
+
+Repo / file
 https://github.com/Simone558/clinical-insight-assistant
